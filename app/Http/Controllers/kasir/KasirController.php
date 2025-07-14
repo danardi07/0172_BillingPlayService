@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class KasirController extends Controller
 {
-    // ✅ Melihat daftar billing milik kasir yang login
+
     public function index()
     {
         $billings = Billing::with('perangkat', 'cabang')
@@ -25,7 +25,6 @@ class KasirController extends Controller
         ]);
     }
 
-    // ✅ Menyimpan billing baru
     public function store(StoreBillingRequest $request)
     {
         $billing = Billing::create([
@@ -43,7 +42,7 @@ class KasirController extends Controller
         ]);
     }
 
-    // ✅ Mengubah status billing ke "selesai"
+
     public function updateStatus(UpdateBillingStatusRequest $request, $id)
     {
         $billing = Billing::where('id', $id)

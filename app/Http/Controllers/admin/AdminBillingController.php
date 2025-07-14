@@ -18,14 +18,12 @@ class AdminBillingController extends Controller
 
     public function billingByCabang($cabangId)
 {
-    // Validasi cabang_id terlebih dahulu
     if (!\App\Models\Cabang::where('id', $cabangId)->exists()) {
         return response()->json([
             'message' => 'Cabang tidak ditemukan',
         ], 404);
     }
 
-    // Ambil billing berdasarkan perangkat di cabang tersebut
     $billings = Billing::whereHas('perangkat', function ($query) use ($cabangId) {
         $query->where('cabang_id', $cabangId);
     })->with([

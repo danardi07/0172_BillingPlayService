@@ -42,4 +42,14 @@ class PerangkatController extends Controller
         $perangkat->delete();
         return response()->json(null, 204);
     }
+
+    public function getByCabang($cabangId)
+    {
+        $perangkat = Perangkat::where('cabang_id', $cabangId)->get();
+
+        return response()->json([
+            'message' => 'Data perangkat berdasarkan cabang berhasil diambil',
+            'data' => $perangkat
+        ]);
+    }
 }

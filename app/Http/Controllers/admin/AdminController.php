@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    // Lihat daftar admin per cabang (khusus SuperAdmin)
+
     public function index()
     {
         $admins = User::where('role', 'admin')
@@ -21,7 +21,7 @@ class AdminController extends Controller
         ]);
     }
 
-    // SuperAdmin menambahkan Admin baru
+
     public function store(Request $request)
     {
         $validated = $request->validate([

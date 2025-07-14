@@ -19,8 +19,13 @@ class DashboardController extends Controller
             'total_kasir' => User::where('role', 'kasir')->count(),
             'total_perangkat' => Perangkat::count(),
             'total_transaksi' => Billing::count(),
-            'total_pendapatan' => Billing::sum('total_harga'),
+            'total_pendapatan' => (int) Billing::sum('total_harga'),
             'cabangs' => Cabang::all(),
+            'admins' => User::where('role', 'admin')->get(['id', 'name', 'email']),
+            'kasirs' => User::where('role', 'kasir')->get(['id', 'name', 'email']),
+            'perangkat' => Perangkat::select('id', 'cabang_id', 'nama', 'tipe', 'harga_per_jam')->get(),
+            'transaksi' => Billing::selectRaw("jenis_ps as tipe, COALESCE(total_harga, 0) as total, created_at")->get(),
+
         ]);
     }
 

@@ -9,10 +9,23 @@ use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
-    public function me()
+    public function me(Request $request)
     {
-        return response()->json(Auth::user());
+        $user = auth()->user()->load('cabang:id,name');
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'no_telp' => $user->no_telp,
+            'cabang_id' => $user->cabang_id,
+            'cabang_name' => $user->cabang->name ?? null, 
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ]);
     }
+
 
     public function update(UpdateProfileRequest $request)
     {

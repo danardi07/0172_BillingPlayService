@@ -7,6 +7,7 @@ use App\Models\Billing;
 use App\Models\Perangkat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class KasirBillingController extends Controller
 {
@@ -48,6 +49,8 @@ public function store(Request $request)
         'total_harga' => $totalHarga,
         'nama_pelanggan' => $request->nama_pelanggan,
         'jenis_pembayaran' => $request->jenis_pembayaran,
+        'start_time' => Carbon::now(),
+        'end_time' => Carbon::now()->addMinutes($request->durasi),
     ]);
 
     return response()->json($billing, 201);
@@ -55,17 +58,20 @@ public function store(Request $request)
 
 
     public function updateStatus($id, Request $request) {
+        try {
         $billing = Billing::findOrFail($id);
 
         $request->validate([
-            'status' => 'required|in:ongoing,completed,cancelled',
+            'status' => 'required|in:Digunakan,Kosong',
         ]);
 
         $billing->status = $request->status;
         $billing->save();
 
         return response()->json($billing);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-
 
 }

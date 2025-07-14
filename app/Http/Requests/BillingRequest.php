@@ -8,7 +8,7 @@ class BillingRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; 
+        return true;
     }
 
     public function rules(): array
@@ -17,7 +17,7 @@ class BillingRequest extends FormRequest
             'perangkat_id' => ['required', 'exists:perangkats,id'],
             'durasi' => ['required', 'integer', 'min:1'],
             'total_harga' => ['required', 'numeric', 'min:0'],
-            'status' => ['nullable', 'in:aktif,selesai'],
+            'status' => ['nullable', 'in:Digunakan, Selesai'],
         ];
     }
 }

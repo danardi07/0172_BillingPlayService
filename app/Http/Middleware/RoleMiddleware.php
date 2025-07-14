@@ -11,26 +11,31 @@ class RoleMiddleware
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $role
-     * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  string  $roles
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string $roles)
     {
         $user = auth()->user();
 
         if (!$user) {
+            \Log::info('Tidak ada user');
             return response()->json([
                 'message' => 'Unauthorized (no user)',
-                'statusCode' => 401
+                'statusCode' => 401,
             ], 401);
         }
 
 
-        if ($user->role !== $role) {
+        $allowedRoles = array_map('trim', explode(',', $roles));
+
+        \Log::info('Role user:', ['role' => $user->role]);
+
+        if (!in_array($user->role, $allowedRoles)) {
             return response()->json([
                 'message' => 'Unauthorized (role)',
-                'statusCode' => 403
+                'statusCode' => 403,
             ], 403);
         }
 

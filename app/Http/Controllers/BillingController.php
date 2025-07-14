@@ -41,7 +41,7 @@ class BillingController extends Controller
     {
         $billing = Billing::with('perangkat')
             ->where('kasir_id', $request->user()->id)
-            ->where('status', 'aktif')
+            ->where('status', 'Digunakan')
             ->first();
 
         return response()->json([
